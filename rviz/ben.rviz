@@ -1,5 +1,5 @@
 Panels:
-  - Class: rviz/Displays
+  - Class: rviz_common/Displays
     Help Height: 0
     Name: Displays
     Property Tree Widget:
@@ -7,27 +7,23 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1
-        - /TF1/Frames1
-        - /TF1/Tree1
-        - /TF1/Tree1/ben/base_link1
-        - /TF1/Tree1/ben/base_link1/ben/motion_sensor1
       Splitter Ratio: 0.5
     Tree Height: 457
-  - Class: rviz/Selection
+  - Class: rviz_common/Selection
     Name: Selection
-  - Class: rviz/Tool Properties
+  - Class: rviz_common/Tool Properties
     Expanded:
       - /2D Pose Estimate1
-      - /2D Nav Goal1
+      - /2D Goal Pose1
       - /Publish Point1
     Name: Tool Properties
     Splitter Ratio: 0.5886790156364441
-  - Class: rviz/Views
+  - Class: rviz_common/Views
     Expanded:
       - /Current View1
     Name: Views
     Splitter Ratio: 0.5
-  - Class: rviz/Time
+  - Class: rviz_common/Time
     Experimental: false
     Name: Time
     SyncMode: 0
@@ -41,7 +37,7 @@ Visualization Manager:
   Displays:
     - Alpha: 0.5
       Cell Size: 1
-      Class: rviz/Grid
+      Class: rviz_default_plugins/Grid
       Color: 160; 160; 164
       Enabled: true
       Line Style:
@@ -58,170 +54,17 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Alpha: 1
-      Class: rviz/RobotModel
+      Class: rviz_default_plugins/RobotModel
       Collision Enabled: false
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /ben/robot_description
       Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        ben/base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/engine_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/forward_camera:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/forward_camera_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/gps:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/heading:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/lidar:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/motion_sensor:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano_1_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_1_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_1_optical_rviz_mesh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano_2_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_2_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_2_optical_rviz_mesh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano_3_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_3_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_3_optical_rviz_mesh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_4:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano_4_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_4_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_4_optical_rviz_mesh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_5:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano_5_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_5_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_5_optical_rviz_mesh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_6:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/pano_6_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_6_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/pano_6_optical_rviz_mesh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ben/propeller_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ben/radar:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: RobotModel
-      Robot Description: ben/robot_description
       TF Prefix: ""
       Update Interval: 0
       Value: true
@@ -234,7 +77,7 @@ Visualization Manager:
         Value: true
       Axis: Z
       Channel Name: intensity
-      Class: rviz/PointCloud2
+      Class: rviz_default_plugins/PointCloud2
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
@@ -244,229 +87,89 @@ Visualization Manager:
       Min Color: 0; 0; 0
       Name: PointCloud2
       Position Transformer: XYZ
-      Queue Size: 10
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Points
-      Topic: /ben/sensors/lidar/points
-      Unreliable: false
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /ben/sensors/lidar/points
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
-    - Class: rviz/Image
+    - Class: rviz_default_plugins/Image
       Enabled: true
-      Image Topic: /ben/sensors/cameras/forward_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
       Name: Image
       Normalize Range: true
-      Queue Size: 2
-      Transport Hint: raw
-      Unreliable: false
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /ben/sensors/cameras/forward_camera/image_raw
       Value: true
-    - Class: rviz/TF
+    - Class: rviz_default_plugins/TF
       Enabled: true
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        ben/base_link:
-          Value: true
-        ben/engine_link:
-          Value: true
-        ben/forward_camera:
-          Value: true
-        ben/forward_camera_optical:
-          Value: true
-        ben/gps:
-          Value: true
-        ben/heading:
-          Value: true
-        ben/lidar:
-          Value: true
-        ben/motion_sensor:
-          Value: true
-        ben/pano:
-          Value: true
-        ben/pano_1:
-          Value: true
-        ben/pano_1_base:
-          Value: true
-        ben/pano_1_optical:
-          Value: true
-        ben/pano_1_optical_rviz_mesh:
-          Value: true
-        ben/pano_2:
-          Value: true
-        ben/pano_2_base:
-          Value: true
-        ben/pano_2_optical:
-          Value: true
-        ben/pano_2_optical_rviz_mesh:
-          Value: true
-        ben/pano_3:
-          Value: true
-        ben/pano_3_base:
-          Value: true
-        ben/pano_3_optical:
-          Value: true
-        ben/pano_3_optical_rviz_mesh:
-          Value: true
-        ben/pano_4:
-          Value: true
-        ben/pano_4_base:
-          Value: true
-        ben/pano_4_optical:
-          Value: true
-        ben/pano_4_optical_rviz_mesh:
-          Value: true
-        ben/pano_5:
-          Value: true
-        ben/pano_5_base:
-          Value: true
-        ben/pano_5_optical:
-          Value: true
-        ben/pano_5_optical_rviz_mesh:
-          Value: true
-        ben/pano_6:
-          Value: true
-        ben/pano_6_base:
-          Value: true
-        ben/pano_6_optical:
-          Value: true
-        ben/pano_6_optical_rviz_mesh:
-          Value: true
-        ben/propeller_link:
-          Value: true
-        ben/radar:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
-      Tree:
-        ben/base_link:
-          ben/motion_sensor:
-            ben/engine_link:
-              ben/propeller_link:
-                {}
-            ben/forward_camera:
-              ben/forward_camera_optical:
-                {}
-            ben/gps:
-              {}
-            ben/heading:
-              {}
-            ben/lidar:
-              {}
-            ben/pano:
-              ben/pano_1_base:
-                ben/pano_1:
-                  ben/pano_1_optical:
-                    ben/pano_1_optical_rviz_mesh:
-                      {}
-              ben/pano_2_base:
-                ben/pano_2:
-                  ben/pano_2_optical:
-                    ben/pano_2_optical_rviz_mesh:
-                      {}
-              ben/pano_3_base:
-                ben/pano_3:
-                  ben/pano_3_optical:
-                    ben/pano_3_optical_rviz_mesh:
-                      {}
-              ben/pano_4_base:
-                ben/pano_4:
-                  ben/pano_4_optical:
-                    ben/pano_4_optical_rviz_mesh:
-                      {}
-              ben/pano_5_base:
-                ben/pano_5:
-                  ben/pano_5_optical:
-                    ben/pano_5_optical_rviz_mesh:
-                      {}
-              ben/pano_6_base:
-                ben/pano_6:
-                  ben/pano_6_optical:
-                    ben/pano_6_optical_rviz_mesh:
-                      {}
-            ben/radar:
-              {}
       Update Interval: 0
-      Value: true
-    - Class: rviz_textured_quads/MeshDisplayCustom
-      Enabled: true
-      Image Topic: /ben/sensors/cameras/pano_1/image_raw
-      Meters per pixel: 0.004999999888241291
-      Name: MeshDisplayPano1
-      Quad Frame: ben/pano_1_optical_rviz_mesh
-      Value: true
-    - Class: rviz_textured_quads/MeshDisplayCustom
-      Enabled: true
-      Image Topic: /ben/sensors/cameras/pano_2/image_raw
-      Meters per pixel: 0.004999999888241291
-      Name: MeshDisplayPano2
-      Quad Frame: ben/pano_2_optical_rviz_mesh
-      Value: true
-    - Class: rviz_textured_quads/MeshDisplayCustom
-      Enabled: true
-      Image Topic: /ben/sensors/cameras/pano_3/image_raw
-      Meters per pixel: 0.004999999888241291
-      Name: MeshDisplayPano3
-      Quad Frame: ben/pano_3_optical_rviz_mesh
-      Value: true
-    - Class: rviz_textured_quads/MeshDisplayCustom
-      Enabled: true
-      Image Topic: /ben/sensors/cameras/pano_4/image_raw
-      Meters per pixel: 0.004999999888241291
-      Name: MeshDisplayPano4
-      Quad Frame: ben/pano_4_optical_rviz_mesh
-      Value: true
-    - Class: rviz_textured_quads/MeshDisplayCustom
-      Enabled: true
-      Image Topic: /ben/sensors/cameras/pano_5/image_raw
-      Meters per pixel: 0.004999999888241291
-      Name: MeshDisplayPano5
-      Quad Frame: ben/pano_5_optical_rviz_mesh
-      Value: true
-    - Class: rviz_textured_quads/MeshDisplayCustom
-      Enabled: true
-      Image Topic: /ben/sensors/cameras/pano_6/image_raw
-      Meters per pixel: 0.004999999888241291
-      Name: MeshDisplayPano6
-      Quad Frame: ben/pano_6_optical_rviz_mesh
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Default Light: true
     Fixed Frame: ben/base_link
     Frame Rate: 30
   Name: root
   Tools:
-    - Class: rviz/Interact
+    - Class: rviz_default_plugins/Interact
       Hide Inactive Objects: true
-    - Class: rviz/MoveCamera
-    - Class: rviz/Select
-    - Class: rviz/FocusCamera
-    - Class: rviz/Measure
-    - Class: rviz/SetInitialPose
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_default_plugins/SetInitialPose
       Theta std deviation: 0.2617993950843811
-      Topic: /initialpose
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /initialpose
       X std deviation: 0.5
       Y std deviation: 0.5
-    - Class: rviz/SetGoal
-      Topic: /move_base_simple/goal
-    - Class: rviz/PublishPoint
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
       Single click: true
-      Topic: /clicked_point
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /clicked_point
   Value: true
   Views:
     Current:
-      Class: rviz/Orbit
+      Class: rviz_default_plugins/Orbit
       Distance: 26.206628799438477
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549

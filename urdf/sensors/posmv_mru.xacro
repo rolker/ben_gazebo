@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="posmv_mru_gazebo" params="name:=posmv update_rate:=100">
+
+    <!-- NavSat sensor for position -->
     <gazebo reference="${namespace}/motion_sensor">
-      <sensor type="gps" name="${namespace}/${name}_gps">
-        <plugin name="posmv_mru_plugin_${name}" filename="libgazebo_ros_mru.so">
-          <imuSensorName>${namespace}/${name}_imu</imuSensorName>
-          <positionTopic>${namespace}/${sensor_namespace}${name}/position</positionTopic>
-          <orientationTopic>${namespace}/${sensor_namespace}${name}/orientation</orientationTopic>
-          <velocityTopic>${namespace}/${sensor_namespace}${name}/velocity</velocityTopic>
-          <frameId>${namespace}/motion_sensor</frameId>
-        </plugin>
+      <sensor type="navsat" name="${namespace}_${name}_navsat">
         <always_on>1</always_on>
         <update_rate>${update_rate}</update_rate>
-        <gps>
+        <topic>${namespace}/sensors/${name}/fix</topic>
+        <navsat>
           <position_sensing>
             <horizontal>
               <noise type="gaussian">
@@ -49,9 +45,14 @@
               </noise>
             </vertical>
           </velocity_sensing>
-        </gps>
+        </navsat>
       </sensor>
-      <sensor type="imu" name="${namespace}/${name}_imu">
+
+      <!-- IMU sensor for orientation and angular velocity -->
+      <sensor type="imu" name="${namespace}_${name}_imu">
+        <always_on>1</always_on>
+        <update_rate>${update_rate}</update_rate>
+        <topic>${namespace}/sensors/${name}/imu/data</topic>
         <imu>
           <angular_velocity>
             <x>
@@ -110,5 +111,3 @@
     </gazebo>
   </xacro:macro>
 </robot>
-
-

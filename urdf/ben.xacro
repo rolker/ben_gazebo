@@ -1,25 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="ben">
 
-  <!-- Note: this is only used for some sensors that do not correctly use the
-  robotNamespace parameter -->
   <xacro:arg name="namespace" default="ben"/>
-  <xacro:arg name="thruster_namespace" default="control/"/>
-  <xacro:arg name="camera_namespace" default="cameras/"/>  
-  <xacro:arg name="sensor_namespace" default="sensors/"/>
-  <xacro:property name="thruster_namespace" value="$(arg thruster_namespace)" scope="global" />
-  <xacro:property name="camera_namespace" value="$(arg camera_namespace)" scope="global" />
-  <xacro:property name="sensor_namespace" value="$(arg sensor_namespace)" scope="global" />
   <xacro:property name="namespace" value="$(arg namespace)" scope="global" />
 
-  <!-- Robot mesh -->
+  <!-- Robot mesh and physical links from ben_description -->
   <xacro:include filename="$(find ben_description)/urdf/ben_mesh.xacro" />
-  
-  
+
+  <!-- Dynamics (hydrodynamics drag) -->
   <xacro:include filename="$(find ben_gazebo)/urdf/ben_dynamics_plugin.xacro" />
   <xacro:usv_dynamics_gazebo name="ben_dynamics_plugin" />
-  
-  
+
+  <!-- Sensors -->
   <xacro:include filename="$(find ben_gazebo)/urdf/sensors/oem_gps.xacro" />
   <xacro:oem_gps_gazebo name="gps" />
 
@@ -27,19 +19,18 @@
   <xacro:oem_heading_sensor_gazebo name="heading" />
 
   <xacro:include filename="$(find ben_gazebo)/urdf/sensors/posmv_mru.xacro" />
-  <xacro:posmv_mru_gazebo/>
-  
+  <xacro:posmv_mru_gazebo />
+
   <xacro:include filename="$(find ben_gazebo)/urdf/sensors/lidar.xacro" />
-  <xacro:ben_lidar_gazebo name="lidar"/>
+  <xacro:ben_lidar_gazebo name="lidar" />
 
   <xacro:include filename="$(find ben_gazebo)/urdf/sensors/forward_camera.xacro" />
-  <xacro:forward_camera_gazebo name="forward_camera"/>
+  <xacro:forward_camera_gazebo name="forward_camera" />
 
   <xacro:include filename="$(find ben_gazebo)/urdf/sensors/pano_array.xacro" />
-  <xacro:pano_array_gazebo name="pano"/>
+  <xacro:pano_array_gazebo name="pano" />
 
-    
-  <!-- === Thruster === -->
+  <!-- Thruster (jet drive) -->
   <xacro:include filename="$(find ben_gazebo)/urdf/ben_thruster.xacro" />
-  
+
 </robot>

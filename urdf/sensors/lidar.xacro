@@ -8,13 +8,14 @@
                                             max_range:=130 noise_stddev:=0.01">
 
     <gazebo reference="${namespace}/${name}">
-      <sensor type="gpu_ray" name="${name}_sensor">
+      <sensor type="gpu_lidar" name="${name}_sensor">
         <update_rate>${update_rate}</update_rate>
-        <ray>
+        <topic>${namespace}/sensors/${name}/scan/points</topic>
+        <lidar>
           <scan>
             <horizontal>
-              <samples>${samples/resolution}</samples>
-              <resolution>${resolution}</resolution>
+              <samples>${samples}</samples>
+              <resolution>1</resolution>
               <min_angle>${min_angle}</min_angle>
               <max_angle>${max_angle}</max_angle>
             </horizontal>
@@ -34,16 +35,11 @@
             <mean>0.0</mean>
             <stddev>${noise_stddev}</stddev>
           </noise>
-        </ray>
-        <plugin name="${name}_plugin" filename="libgazebo_ros_velodyne_gpu_laser.so">
-          <topicName>${namespace}/${sensor_namespace}${name}/velodyne_points</topicName>
-          <frameName>${namespace}/${name}</frameName>
-          <min_intensity>0</min_intensity>
-        </plugin>
+        </lidar>
+        <visualize>false</visualize>
       </sensor>
     </gazebo>
 
   </xacro:macro>
-  
-  
+
 </robot>

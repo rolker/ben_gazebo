@@ -2,15 +2,11 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="oem_gps_gazebo" params="name:=gps update_rate:=5">
     <gazebo reference="${namespace}/${name}">
-      <sensor type="gps" name="${namespace}/${name}_gps">
-        <plugin name="gps_plugin_${name}" filename="libgazebo_ros_mru.so">
-          <positionTopic>${namespace}/${sensor_namespace}${name}/position</positionTopic>
-          <velocityTopic>${namespace}/${sensor_namespace}${name}/velocity</velocityTopic>
-          <frameId>${namespace}/${name}</frameId>
-        </plugin>         
-        <updateRate>${update_rate}</updateRate>
-        <alwaysOn>true</alwaysOn>
-        <gps>
+      <sensor type="navsat" name="${namespace}_${name}_navsat">
+        <always_on>1</always_on>
+        <update_rate>${update_rate}</update_rate>
+        <topic>${namespace}/sensors/${name}/fix</topic>
+        <navsat>
           <position_sensing>
             <horizontal>
               <noise type="gaussian">
@@ -47,10 +43,8 @@
               </noise>
             </vertical>
           </velocity_sensing>
-        </gps>
+        </navsat>
       </sensor>
     </gazebo>
   </xacro:macro>
 </robot>
-
-

@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>ben_gazebo</name>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <description>
-    Gazebo model of BEN, the Bathymetric Explorer and Navigator.
+    Gz Harmonic simulation of BEN, the Bathymetric Explorer and Navigator.
   </description>
 
   <author email="roland@ccom.unh.edu">Roland Arsenault</author>
@@ -11,12 +12,17 @@
 
   <license>BSD</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
   <depend>xacro</depend>
   <depend>ben_description</depend>
-  <depend>usv_gazebo_plugins</depend>
-  <depend>vrx_gazebo</depend>
-  <depend>wamv_description</depend>
-  <depend>wamv_gazebo</depend>
+  <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
 
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

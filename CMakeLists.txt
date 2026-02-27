@@ -1,15 +1,14 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(ben_gazebo)
 
-find_package(catkin REQUIRED COMPONENTS
-  xacro
-  ben_description
-  usv_gazebo_plugins
-  vrx_gazebo
-  wamv_description
-  wamv_gazebo
+find_package(ament_cmake REQUIRED)
+
+install(DIRECTORY
+  urdf
+  launch
+  worlds
+  rviz
+  DESTINATION share/${PROJECT_NAME}
 )
 
-catkin_package(
-  CATKIN_DEPENDS xacro usv_gazebo_plugins vrx_gazebo
-)
+ament_package()
