@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find ben_description)/urdf/jetdrive.xacro" />
-  <xacro:engine prefix="${namespace}/" position="-2.15 0.0 -0.3" />
-
   <gazebo>
     <!-- Thrust force applied to propeller joint -->
     <plugin filename="gz-sim-thruster-system"
