@@ -52,7 +52,11 @@ def generate_launch_description():
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        launch_arguments={'gz_args': ['-r ', world]}.items(),
+        launch_arguments={'gz_args': [
+            '-r ',
+            '--physics-engine gz-physics-bullet-featherstone-plugin ',
+            world,
+        ]}.items(),
     )
 
     # Robot state publisher (publishes TF from URDF)
