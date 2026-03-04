@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Buoyancy box: simple collision shape for Gz graded buoyancy.
+       The buoyancy plugin cannot slice mesh collisions to compute
+       partial submersion, so we provide a box approximation of the
+       hull below the waterline. -->
+  <link name="${namespace}/buoyancy_volume">
+    <collision name="${namespace}/buoyancy_box">
+      <geometry>
+        <box size="4.0 1.2 0.4"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+               iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="${namespace}/buoyancy_joint" type="fixed">
+    <parent link="${namespace}/base_link"/>
+    <child link="${namespace}/buoyancy_volume"/>
+    <origin xyz="0.0 0.0 -0.02" rpy="0 0 0"/>
+  </joint>
+</robot>
