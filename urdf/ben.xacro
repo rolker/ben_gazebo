@@ -30,9 +30,6 @@
   <xacro:include filename="$(find ben_gazebo)/urdf/sensors/pano_array.xacro" />
   <xacro:pano_array_gazebo name="pano" />
 
-  <!-- Buoyancy box for Gz graded buoyancy -->
-  <xacro:include filename="$(find ben_gazebo)/urdf/ben_buoyancy.xacro" />
-
   <!-- Thruster (jet drive) -->
   <xacro:include filename="$(find ben_gazebo)/urdf/ben_thruster.xacro" />
 

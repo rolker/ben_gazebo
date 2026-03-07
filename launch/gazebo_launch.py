@@ -36,7 +36,7 @@ def generate_launch_description():
         'rviz', default_value='false')
     declare_x = DeclareLaunchArgument('x', default_value='0')
     declare_y = DeclareLaunchArgument('y', default_value='0')
-    declare_z = DeclareLaunchArgument('z', default_value='0.5')
+    declare_z = DeclareLaunchArgument('z', default_value='-0.36')
     declare_R = DeclareLaunchArgument('R', default_value='0')
     declare_P = DeclareLaunchArgument('P', default_value='0')
     declare_Y = DeclareLaunchArgument('Y', default_value='0')
@@ -52,11 +52,14 @@ def generate_launch_description():
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        launch_arguments={'gz_args': [
-            '-r ',
-            '--physics-engine gz-physics-bullet-featherstone-plugin ',
-            world,
-        ]}.items(),
+        launch_arguments={
+            'gz_args': [
+                '-r ',
+                '--physics-engine gz-physics-bullet-featherstone-plugin ',
+                world,
+            ],
+            'on_exit_shutdown': 'true',
+        }.items(),
     )
 
     # Robot state publisher (publishes TF from URDF)

@@ -1,29 +1,54 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="usv_dynamics_gazebo" params="name">
-    <!-- Gz Harmonic Hydrodynamics plugin (drag/damping).
-         Buoyancy is handled by the world-level Buoyancy plugin
-         using collision geometry volume. -->
+    <!-- VRX Surface plugin for buoyancy + SimpleHydrodynamics for drag.
+         BEN is a monohull (~4 m long, ~1.2 m beam).
+         Points spread across beam (y=±0.8m) for roll stability.
+         CG is 0.35m above base_link origin. With y=±0.8:
+           BM ≈ L*W³/(12*V) = 4*1.6³/(12*0.95) ≈ 1.44m
+           GM = BM - BG ≈ 1.44 - 0.35 = 1.09m (stable)
+         hull_radius=0.44 gives equilibrium at z≈-0.36.
+         9 points: 3 longitudinal × 3 lateral. -->
     <gazebo>
-      <plugin filename="gz-sim-hydrodynamics-system"
-              name="gz::sim::systems::Hydrodynamics">
+      <plugin filename="libSurface.so"
+              name="vrx::Surface">
         <link_name>${namespace}/base_link</link_name>
-        <!-- Added mass -->
+        <hull_length>4.0</hull_length>
+        <hull_radius>0.44</hull_radius>
+        <fluid_level>0</fluid_level>
+        <fluid_density>1000</fluid_density>
+        <points>
+          <point>1.5 -0.8 0</point>
+          <point>1.5  0.0 0</point>
+          <point>1.5  0.8 0</point>
+          <point>0.0 -0.8 0</point>
+          <point>0.0  0.0 0</point>
+          <point>0.0  0.8 0</point>
+          <point>-1.5 -0.8 0</point>
+          <point>-1.5  0.0 0</point>
+          <point>-1.5  0.8 0</point>
+        </points>
+      </plugin>
+
+      <!-- SimpleHydrodynamics temporarily disabled to isolate buoyancy -->
+      <!--plugin filename="libSimpleHydrodynamics.so"
+              name="vrx::SimpleHydrodynamics">
+        <link_name>${namespace}/base_link</link_name>
         <xDotU>0.0</xDotU>
         <yDotV>0.0</yDotV>
         <nDotR>0.0</nDotR>
-        <!-- Linear drag -->
-        <xU>51.3</xU>
-        <yV>40.0</yV>
+        <xU>100.0</xU>
+        <xUU>150.0</xUU>
+        <yV>100.0</yV>
+        <yVV>100.0</yVV>
         <zW>500.0</zW>
-        <kP>50.0</kP>
-        <mQ>50.0</mQ>
-        <nR>400.0</nR>
-        <!-- Quadratic drag -->
-        <xUabsU>72.4</xUabsU>
-        <yVabsV>0.0</yVabsV>
-        <nRabsR>0.0</nRabsR>
-      </plugin>
+        <kP>300.0</kP>
+        <kPP>600.0</kPP>
+        <mQ>500.0</mQ>
+        <mQQ>500.0</mQQ>
+        <nR>500.0</nR>
+        <nRR>500.0</nRR>
+      </plugin-->
     </gazebo>
   </xacro:macro>
 </robot>
