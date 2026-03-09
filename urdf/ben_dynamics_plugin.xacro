@@ -1,16 +1,22 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="usv_dynamics_gazebo" params="name">
-    <!-- PolyhedraBuoyancyDrag for volumetric buoyancy using simple shapes.
-         BEN is a monohull (~4 m long, ~1.2 m beam, 950 kg).
-         Three boxes approximate the hull shape:
-           Main hull: 3.0 x 1.2 x 0.8 m (2.88 m^3)
-           Bow taper: 1.0 x 0.8 x 0.6 m (0.48 m^3)  at x=+1.7 m
-           Stern taper: 0.8 x 0.8 x 0.5 m (0.32 m^3) at x=-1.7 m
-         Total volume: ~3.68 m^3.
-         At equilibrium, ~0.95 m^3 submerged (~26%) for 950 kg displacement.
+    <!-- PolyhedraBuoyancyDrag for volumetric buoyancy.
+         BEN monohull — 883 kg displacement, 4.17m LOA, 1.58m beam, 0.40m draft
+         (from ASV GA drawing ASV-396-7-000-i0001-01).
 
-         Drag is handled separately by gz::sim::systems::Hydrodynamics. -->
+         Mesh keel at z=-0.220 in base_link frame.
+         GA draft 400mm → waterline at z=+0.184 in base_link.
+
+         Box: 4.0 x 1.2 x 0.7 = 3.36 m³, centered at z=0.321.
+         Spans z=-0.029 to z=0.671.
+         Equilibrium: 0.883 m³ → draft 0.184 m → waterline z=0.155.
+         KB=0.092, BM=(4.0×1.2³/12)/0.883=0.652, KG=0.215.
+         GM = 0.092 + 0.652 - 0.215 = +0.529 (stable).
+
+         VRX drag disabled — all damping via gz::sim::systems::Hydrodynamics.
+         Hydrodynamics MUST be model-level (<gazebo> without reference) because
+         Configure() wraps _entity as Model and calls LinkByName(). -->
     <gazebo>
       <plugin filename="libPolyhedraBuoyancyDrag.so"
               name="vrx::PolyhedraBuoyancyDrag">
@@ -20,41 +26,22 @@
         <linear_drag>0</linear_drag>
         <angular_drag>0</angular_drag>
 
-        <!-- Main hull -->
+        <!-- Hull volume — keel to above waterline -->
         <buoyancy>
           <link_name>${namespace}/base_link</link_name>
-          <pose>0 0 0 0 0 0</pose>
+          <pose>0 0 0.321 0 0 0</pose>
           <geometry>
             <box>
-              <size>3.0 1.2 0.8</size>
-            </box>
-          </geometry>
-        </buoyancy>
-
-        <!-- Bow taper -->
-        <buoyancy>
-          <link_name>${namespace}/base_link</link_name>
-          <pose>1.7 0 0 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>1.0 0.8 0.6</size>
-            </box>
-          </geometry>
-        </buoyancy>
-
-        <!-- Stern taper -->
-        <buoyancy>
-          <link_name>${namespace}/base_link</link_name>
-          <pose>-1.7 0 0 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>0.8 0.8 0.5</size>
+              <size>4.0 1.2 0.7</size>
             </box>
           </geometry>
         </buoyancy>
       </plugin>
 
-      <!-- 6-DOF hydrodynamic drag (Gz built-in Fossen-model plugin) -->
+      <!-- 6-DOF hydrodynamic drag (Fossen model).
+           Must be model-level plugin. Parameters are NEGATIVE per Fossen
+           convention: negative values produce drag opposing motion.
+           Values scaled from WAM-V defaults for BEN's heavier hull. -->
       <plugin filename="gz-sim-hydrodynamics-system"
               name="gz::sim::systems::Hydrodynamics">
         <link_name>${namespace}/base_link</link_name>
@@ -64,18 +51,18 @@
         <kDotP>0.0</kDotP>
         <mDotQ>0.0</mDotQ>
         <nDotR>0.0</nDotR>
-        <xU>51.3</xU>
-        <xUabsU>72.4</xUabsU>
-        <yV>40.0</yV>
-        <yVabsV>0.0</yVabsV>
-        <zW>500.0</zW>
-        <zWabsW>0.0</zWabsW>
-        <kP>50.0</kP>
-        <kPabsP>0.0</kPabsP>
-        <mQ>50.0</mQ>
-        <mQabsQ>0.0</mQabsQ>
-        <nR>400.0</nR>
-        <nRabsR>0.0</nRabsR>
+        <xU>-51.3</xU>
+        <xUabsU>-72.4</xUabsU>
+        <yV>-40.0</yV>
+        <yVabsV>-40.0</yVabsV>
+        <zW>-500.0</zW>
+        <zWabsW>-500.0</zWabsW>
+        <kP>-300.0</kP>
+        <kPabsP>-600.0</kPabsP>
+        <mQ>-900.0</mQ>
+        <mQabsQ>-900.0</mQabsQ>
+        <nR>-800.0</nR>
+        <nRabsR>-800.0</nRabsR>
       </plugin>
     </gazebo>
   </xacro:macro>
