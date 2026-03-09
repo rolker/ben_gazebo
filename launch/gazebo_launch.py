@@ -131,6 +131,9 @@ def generate_launch_description():
         # Steering command (ROS → Gz)
         ['/', namespace, '/thrusters/main/pos'
          '@std_msgs/msg/Float64]gz.msgs.Double'],
+        # MBES ram position command (ROS → Gz)
+        ['/', namespace, '/mbes/ram/pos'
+         '@std_msgs/msg/Float64]gz.msgs.Double'],
     ]
 
     # Add panoramic cameras (6 cameras, image + camera_info each)

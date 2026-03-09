@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <gazebo>
-    <!-- Thrust force applied to propeller joint -->
+    <!-- Thrust force applied to waterjet impeller -->
     <plugin filename="gz-sim-thruster-system"
             name="gz::sim::systems::Thruster">
-      <joint_name>${namespace}/engine_propeller_joint</joint_name>
+      <joint_name>${namespace}/jetdrive_impeller_joint</joint_name>
       <thrust_coefficient>0.004</thrust_coefficient>
       <fluid_density>1000</fluid_density>
       <propeller_diameter>0.2</propeller_diameter>
@@ -14,12 +14,20 @@
       <topic>${namespace}/thrusters/main/thrust</topic>
     </plugin>
 
-    <!-- Steering angle control on the engine joint -->
+    <!-- Steering: deflector/bucket position control -->
     <plugin filename="gz-sim-joint-position-controller-system"
             name="gz::sim::systems::JointPositionController">
-      <joint_name>${namespace}/chasis_engine_joint</joint_name>
+      <joint_name>${namespace}/jetdrive_deflector_joint</joint_name>
       <use_velocity_commands>true</use_velocity_commands>
       <topic>${namespace}/thrusters/main/pos</topic>
+    </plugin>
+
+    <!-- MBES ram: vertical position control -->
+    <plugin filename="gz-sim-joint-position-controller-system"
+            name="gz::sim::systems::JointPositionController">
+      <joint_name>${namespace}/mbes_ram_joint</joint_name>
+      <use_velocity_commands>true</use_velocity_commands>
+      <topic>${namespace}/mbes/ram/pos</topic>
     </plugin>
   </gazebo>
 </robot>
