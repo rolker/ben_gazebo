@@ -36,6 +36,11 @@
             </box>
           </geometry>
         </buoyancy>
+
+        <!-- Subscribe to wavefield for wave-driven buoyancy forces -->
+        <wavefield>
+          <topic>/vrx/wavefield/parameters</topic>
+        </wavefield>
       </plugin>
 
       <!-- 6-DOF hydrodynamic drag (Fossen model).

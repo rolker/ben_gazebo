@@ -56,26 +56,45 @@
       <direction>-0.5 0.1 -0.9</direction>
     </light>
 
-    <!-- Water surface visual -->
-    <model name="water_plane">
-      <static>true</static>
-      <link name="link">
-        <visual name="water_visual">
-          <pose>0 0 0 0 0 0</pose>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>1000 1000</size>
-            </plane>
-          </geometry>
-          <material>
-            <ambient>0.0 0.05 0.3 0.8</ambient>
-            <diffuse>0.0 0.1 0.5 0.8</diffuse>
-            <specular>0.5 0.5 0.5 0.5</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
+    <!-- Dynamic wave surface (VRX Gerstner waves) -->
+    <include>
+      <uri>coast_waves</uri>
+    </include>
+
+    <!-- Wavefield parameters — drives both wave visuals and buoyancy physics.
+         PolyhedraBuoyancyDrag and WaveVisual subscribe to this topic. -->
+    <plugin filename="libPublisherPlugin.so" name="vrx::PublisherPlugin">
+      <message type="gz.msgs.Param" topic="/vrx/wavefield/parameters" every="2.0">
+        params {
+          key: "direction"
+          value {
+            type: DOUBLE
+            double_value: 0.0
+          }
+        }
+        params {
+          key: "gain"
+          value {
+            type: DOUBLE
+            double_value: 0.3
+          }
+        }
+        params {
+          key: "period"
+          value {
+            type: DOUBLE
+            double_value: 5
+          }
+        }
+        params {
+          key: "steepness"
+          value {
+            type: DOUBLE
+            double_value: 0
+          }
+        }
+      </message>
+    </plugin>
 
     <gravity>0 0 -9.8</gravity>
 
