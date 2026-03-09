@@ -8,10 +8,10 @@
       <thrust_coefficient>0.004</thrust_coefficient>
       <fluid_density>1000</fluid_density>
       <propeller_diameter>0.2</propeller_diameter>
-      <velocity_control>true</velocity_control>
+      <velocity_control>false</velocity_control>
       <max_thrust_cmd>1800</max_thrust_cmd>
       <min_thrust_cmd>-500</min_thrust_cmd>
-      <topic>${namespace}/thrusters/main/thrust</topic>
+      <topic>thrusters/main/thrust</topic>
     </plugin>
 
     <!-- Steering: deflector/bucket position control -->
