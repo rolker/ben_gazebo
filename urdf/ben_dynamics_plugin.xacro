@@ -1,54 +1,82 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="usv_dynamics_gazebo" params="name">
-    <!-- VRX Surface plugin for buoyancy + SimpleHydrodynamics for drag.
-         BEN is a monohull (~4 m long, ~1.2 m beam).
-         Points spread across beam (y=±0.8m) for roll stability.
-         CG is 0.35m above base_link origin. With y=±0.8:
-           BM ≈ L*W³/(12*V) = 4*1.6³/(12*0.95) ≈ 1.44m
-           GM = BM - BG ≈ 1.44 - 0.35 = 1.09m (stable)
-         hull_radius=0.44 gives equilibrium at z≈-0.36.
-         9 points: 3 longitudinal × 3 lateral. -->
+    <!-- PolyhedraBuoyancyDrag for volumetric buoyancy using simple shapes.
+         BEN is a monohull (~4 m long, ~1.2 m beam, 950 kg).
+         Three boxes approximate the hull shape:
+           Main hull: 3.0 x 1.2 x 0.8 m (2.88 m^3)
+           Bow taper: 1.0 x 0.8 x 0.6 m (0.48 m^3)  at x=+1.7 m
+           Stern taper: 0.8 x 0.8 x 0.5 m (0.32 m^3) at x=-1.7 m
+         Total volume: ~3.68 m^3.
+         At equilibrium, ~0.95 m^3 submerged (~26%) for 950 kg displacement.
+
+         Drag is handled separately by gz::sim::systems::Hydrodynamics. -->
     <gazebo>
-      <plugin filename="libSurface.so"
-              name="vrx::Surface">
+      <plugin filename="libPolyhedraBuoyancyDrag.so"
+              name="vrx::PolyhedraBuoyancyDrag">
         <link_name>${namespace}/base_link</link_name>
-        <hull_length>4.0</hull_length>
-        <hull_radius>0.44</hull_radius>
-        <fluid_level>0</fluid_level>
         <fluid_density>1000</fluid_density>
-        <points>
-          <point>1.5 -0.8 0</point>
-          <point>1.5  0.0 0</point>
-          <point>1.5  0.8 0</point>
-          <point>0.0 -0.8 0</point>
-          <point>0.0  0.0 0</point>
-          <point>0.0  0.8 0</point>
-          <point>-1.5 -0.8 0</point>
-          <point>-1.5  0.0 0</point>
-          <point>-1.5  0.8 0</point>
-        </points>
+        <fluid_level>0</fluid_level>
+        <linear_drag>0</linear_drag>
+        <angular_drag>0</angular_drag>
+
+        <!-- Main hull -->
+        <buoyancy>
+          <link_name>${namespace}/base_link</link_name>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>3.0 1.2 0.8</size>
+            </box>
+          </geometry>
+        </buoyancy>
+
+        <!-- Bow taper -->
+        <buoyancy>
+          <link_name>${namespace}/base_link</link_name>
+          <pose>1.7 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.0 0.8 0.6</size>
+            </box>
+          </geometry>
+        </buoyancy>
+
+        <!-- Stern taper -->
+        <buoyancy>
+          <link_name>${namespace}/base_link</link_name>
+          <pose>-1.7 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.8 0.8 0.5</size>
+            </box>
+          </geometry>
+        </buoyancy>
       </plugin>
 
-      <!-- SimpleHydrodynamics temporarily disabled to isolate buoyancy -->
-      <!--plugin filename="libSimpleHydrodynamics.so"
-              name="vrx::SimpleHydrodynamics">
+      <!-- 6-DOF hydrodynamic drag (Gz built-in Fossen-model plugin) -->
+      <plugin filename="gz-sim-hydrodynamics-system"
+              name="gz::sim::systems::Hydrodynamics">
         <link_name>${namespace}/base_link</link_name>
         <xDotU>0.0</xDotU>
         <yDotV>0.0</yDotV>
+        <zDotW>0.0</zDotW>
+        <kDotP>0.0</kDotP>
+        <mDotQ>0.0</mDotQ>
         <nDotR>0.0</nDotR>
-        <xU>100.0</xU>
-        <xUU>150.0</xUU>
-        <yV>100.0</yV>
-        <yVV>100.0</yVV>
+        <xU>51.3</xU>
+        <xUabsU>72.4</xUabsU>
+        <yV>40.0</yV>
+        <yVabsV>0.0</yVabsV>
         <zW>500.0</zW>
-        <kP>300.0</kP>
-        <kPP>600.0</kPP>
-        <mQ>500.0</mQ>
-        <mQQ>500.0</mQQ>
-        <nR>500.0</nR>
-        <nRR>500.0</nRR>
-      </plugin-->
+        <zWabsW>0.0</zWabsW>
+        <kP>50.0</kP>
+        <kPabsP>0.0</kPabsP>
+        <mQ>50.0</mQ>
+        <mQabsQ>0.0</mQabsQ>
+        <nR>400.0</nR>
+        <nRabsR>0.0</nRabsR>
+      </plugin>
     </gazebo>
   </xacro:macro>
 </robot>

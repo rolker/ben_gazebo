@@ -36,7 +36,7 @@ def generate_launch_description():
         'rviz', default_value='false')
     declare_x = DeclareLaunchArgument('x', default_value='0')
     declare_y = DeclareLaunchArgument('y', default_value='0')
-    declare_z = DeclareLaunchArgument('z', default_value='-0.36')
+    declare_z = DeclareLaunchArgument('z', default_value='0.0')
     declare_R = DeclareLaunchArgument('R', default_value='0')
     declare_P = DeclareLaunchArgument('P', default_value='0')
     declare_Y = DeclareLaunchArgument('Y', default_value='0')
