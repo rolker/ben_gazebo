@@ -122,7 +122,7 @@ private:
 
     if (have_odom_) {
       auto now = get_clock()->now();
-      auto odom_age = now - rclcpp::Time(latest_odom_.header.stamp);
+      auto odom_age = now - rclcpp::Time(latest_odom_.header.stamp, get_clock()->get_clock_type());
       if (odom_age.seconds() < 1.0) {
         double error = msg->twist.linear.x - latest_odom_.twist.twist.linear.x;
         rclcpp::Duration dt(0, 0);
