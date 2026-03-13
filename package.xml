@@ -18,6 +18,13 @@
   <depend>ben_description</depend>
   <depend>ros_gz_sim</depend>
   <depend>ros_gz_bridge</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>control_toolbox</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>marine_interfaces</depend>
 
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>rviz2</exec_depend>
