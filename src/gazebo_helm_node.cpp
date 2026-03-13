@@ -214,7 +214,7 @@ private:
   // State
   nav_msgs::msg::Odometry latest_odom_;
   bool have_odom_{false};
-  rclcpp::Time last_twist_time_{0, 0, RCL_ROS_TIME};
+  rclcpp::Time last_twist_time_;
 };
 
 int main(int argc, char ** argv)
