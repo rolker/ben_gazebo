@@ -1,13 +1,67 @@
 """Spawn BEN into an already-running Gazebo world."""
 
 import os
+import subprocess
+import tempfile
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+
+
+def _spawn_ben(context, *args, **kwargs):
+    """Generate spawn node using -string with pre-converted SDF.
+
+    The -topic approach (reading URDF from robot_description) has a Gz Harmonic
+    bug where the model is added to the server but never appears in the GUI.
+    Converting to SDF first and using -string works correctly.
+    """
+    pkg_ben_gazebo = get_package_share_directory('ben_gazebo')
+    ns = LaunchConfiguration('namespace').perform(context)
+    x = LaunchConfiguration('x').perform(context)
+    y = LaunchConfiguration('y').perform(context)
+    z = LaunchConfiguration('z').perform(context)
+    R = LaunchConfiguration('R').perform(context)
+    P = LaunchConfiguration('P').perform(context)
+    Y = LaunchConfiguration('Y').perform(context)
+
+    xacro_file = os.path.join(pkg_ben_gazebo, 'urdf', 'ben.xacro')
+
+    # xacro → URDF → SDF
+    # gz sdf -p requires a real file path, so we use a temp file.
+    urdf = subprocess.check_output(
+        ['xacro', xacro_file, f'namespace:={ns}'],
+        text=True,
+    )
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.urdf', delete=False
+    ) as f:
+        f.write(urdf)
+        urdf_path = f.name
+    try:
+        sdf = subprocess.check_output(
+            ['gz', 'sdf', '-p', urdf_path],
+            text=True,
+        )
+    finally:
+        os.unlink(urdf_path)
+
+    return [
+        Node(
+            package='ros_gz_sim',
+            executable='create',
+            arguments=[
+                '-string', sdf,
+                '-name', ns,
+                '-x', x, '-y', y, '-z', z,
+                '-R', R, '-P', P, '-Y', Y,
+            ],
+            output='screen',
+        ),
+    ]
 
 
 def generate_launch_description():
@@ -16,12 +70,6 @@ def generate_launch_description():
     # Launch arguments
     namespace = LaunchConfiguration('namespace')
     world_name = LaunchConfiguration('world_name')
-    x = LaunchConfiguration('x')
-    y = LaunchConfiguration('y')
-    z = LaunchConfiguration('z')
-    R = LaunchConfiguration('R')
-    P = LaunchConfiguration('P')
-    Y = LaunchConfiguration('Y')
 
     declare_namespace = DeclareLaunchArgument(
         'namespace', default_value='ben')
@@ -35,14 +83,14 @@ def generate_launch_description():
     declare_P = DeclareLaunchArgument('P', default_value='0')
     declare_Y = DeclareLaunchArgument('Y', default_value='0')
 
-    # Process xacro
+    # Process xacro for robot_state_publisher (needs URDF, not SDF)
     xacro_file = os.path.join(pkg_ben_gazebo, 'urdf', 'ben.xacro')
     robot_description = ParameterValue(
         Command(['xacro ', xacro_file, ' namespace:=', namespace]),
         value_type=str,
     )
 
-    # Robot state publisher (publishes TF from Gazebo URDF with sensors/plugins)
+    # Robot state publisher (publishes TF from URDF)
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -51,19 +99,6 @@ def generate_launch_description():
             'robot_description': robot_description,
             'use_sim_time': True,
         }],
-        output='screen',
-    )
-
-    # Spawn model into Gz from the robot_description topic
-    spawn_entity = Node(
-        package='ros_gz_sim',
-        executable='create',
-        arguments=[
-            '-name', namespace,
-            '-topic', [namespace, '/robot_description'],
-            '-x', x, '-y', y, '-z', z,
-            '-R', R, '-P', P, '-Y', Y,
-        ],
         output='screen',
     )
 
@@ -193,6 +228,6 @@ def generate_launch_description():
         declare_x, declare_y, declare_z,
         declare_R, declare_P, declare_Y,
         robot_state_publisher,
-        spawn_entity,
+        OpaqueFunction(function=_spawn_ben),
         bridge,
     ])
